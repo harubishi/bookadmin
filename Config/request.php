@@ -3,20 +3,18 @@
 class Request{
 	public function isPost()
 	{
-		if($_SERVER['REQUEST_METHOD'] == 'POST'){
+		if($_SERVER['REQUEST_METHOD'] === 'POST'){
 			return true;
-		}
-		else{
+		}else{
 			return false;
 		}
 	}
 
 	public function isGet()
 	{
-		if($_SERVER['REQUEST_METHOD'] == 'GET'){
+		if($_SERVER['REQUEST_METHOD'] === 'GET'){
 			return true;
-		}
-		else{
+		}else{
 			return false;
 		}	
 	}
