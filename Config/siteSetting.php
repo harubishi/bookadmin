@@ -5,7 +5,7 @@ class siteSetting{
 	private $title;
 	private $h1;
 
-	public function setMetaData($params)
+	public function setMeta($params)
 	{
 		$this->title = isset($params['title'])? $params['title'] : '';
 		$this->h1 = isset($params['h1'])? $params['h1'] : '';
