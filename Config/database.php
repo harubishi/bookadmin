@@ -6,7 +6,7 @@ class Database
 	private $default;
 	private $development =[
 		'host' => 'localhost',
-		'database' => 'test',
+		'database' => 'book_manager',
 		'username' => 'root',
 		'password' => 'root',
 		'charset' => 'utf8'
@@ -29,11 +29,11 @@ class Database
 	}
 
 	//sqlを実行する関数
-	public function excute($sql,$params){
+	public function execute($sql,$params){
 		try{
 			//SQLジェックション
 			$stmt = $this->pdo->prepare($sql);
-			$stmt->excute($params);
+			$stmt->execute($params);
 
 			return $stmt;
 

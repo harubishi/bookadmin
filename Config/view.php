@@ -2,45 +2,43 @@
 
 class View{
 
-	private $path = 'http://' . $_SERVER['HTTP_HOST'];
-	private $layout = '/Layout/';
 	private $element = '/Element/';
 	private $js = '/js/';
 	private $css = '/css/';
 	private $img = '/img/';
-	
-	//Layoutファルダ以下を読み込む
-	public function  getLayout($file)
-
-		return include_once( $this->path . $this->layout . $file . '.php');
-	}
 
 	//Elementフォルダ以下を読み込む
 	public function getElement($file)
 	{
-		return include_once( $this->path . $this->element . $file . '.php');
+		return $_SERVER['DOCUMENT_ROOT'] . $this->element . $file . '.php';
 	}
 
 	//scriptタグの取得
 	public function getScript($file)
 	{
-		$path = $this->path . $this->js . $file;
 
-		return '<script type="text/javascript" src="{$path}"></script>'; 
+		$path = $this->getRootUrl() .'/webroot'. $this->js . $file;
+
+		return '<script type="text/javascript" src=' . $path . '></script>'; 
 	}
 
 	//imgパスの取得
 	public function getImgPath($file)
 	{
-		return $this->path . $this->img . $file;
+		return $this->getRootUrl() .'/webroot'. $this->img . $file;
 	}
 
 	//cssリンクタグの取得
 	public function getCss($file)
 	{
-		$path = $this->path . $this->css . $file;
+		$path = $this->getRootUrl() .'/webroot'. $this->css . $file;
 
-		return '<link rel="stylesheet" type="text/css" href="{$path"} />'; 
+		return '<link rel="stylesheet" type="text/css" href=' . $path . ' />'; 
+	}
+
+	public function getRootUrl()
+	{
+		return 'http://' . $_SERVER['HTTP_HOST'];
 	}
 
 	//主にxss対策
