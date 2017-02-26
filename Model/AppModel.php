@@ -1,31 +1,51 @@
 <?php 
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Config/datebase.php");
-
-interface fsf{
-
-}
-
-abstract class Abstract{
-	abstract getRowset();
-
-}
+require_once($_SERVER['DOCUMENT_ROOT'] .'/Model/Row/Store.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . "/Config/database.php");
 
 class AppModel{
-	private $Db = new Database;
 
-	public function fetch($sql,$array = array())
+	const STATUS_PUBLIC = 1; //定数
+	const STATUS_PRIVATE = 0;
+	protected $_params;
+	protected  $__Validation;
+	private  $__Db;
+	
+	public function __construct()
 	{
-		return $this->Db->execute($sql,$params)->fetch(PDO::FETCH_ASSOC);
+		$this->__Db = new Database;
 	}
 
-	public function fetchAll($sql,$array = array()){
-		return $this->Db->execute($sql,$array)->fetchAll(PDO::FETCH_ASSOC);
+	public function validate()
+	{
+		return ($this->__Validation->validate())? true : false;
 	}
 
-	public function insert($sql,$params = array())
+	public function getErrors()
+	{
+		return $this->__Validation->getErrors();
+	}
+
+	public function set($params)
+	{
+		$params = $params[$this->row];
+		$this->_params = $params;
+		$this->__Validation->set($params);
+	}
+
+	public function fetch($sql,$params = array())
+	{
+		return $this->__Db->execute($sql,$params)->fetchObject($this->row);
+	}
+
+	public function fetchAll($sql,$params = array())
+	{
+		return $this->__Db->execute($sql,$params)->fetchAll(PDO::FETCH_CLASS,$this->row);
+	}
+
+	public function exec($sql,$params = array())
 	{
 		try{
-			$this->execute($sql,$params);
+			$this->__Db->execute($sql,$params);
 		}catch(PDOException $e){
 			echo $e->Message();
 			exit;
@@ -34,7 +54,7 @@ class AppModel{
 		return true;
 	}
 
-	public function setCurrentDate()
+	protected function setCurrentDate()
 	{
 		return date('Y-m-d H:i:s');
 	}

@@ -1,20 +1,17 @@
 <?php
-
 require_once('./Config/loader.php');
 require_once('./Model/Table/StoreTable.php');
-$loader = new Loader;
-$loader->siteSetting->setMeta([
-	'title' => '店舗登録画面',
-	'h1' => '店舗登録'
-]);
-$StoreTable = new StoreTable;
-if($loader->Request->isPost()){
 
-	$StoreTable->set($_POST);
+$loader = new Loader;
+$StoreTable = new StoreTable;
+$StoreRow = $StoreTable->getRowById($_GET['id']);
+
+if($loader->Request->isPost()){
+ 	$StoreTable->set($_POST);
 	$formData = $_POST['Store'];
 
-	if($StoreTable->validate()){
-		$StoreTable->save();
+	if($StoreTable ->validate()){
+		$StoreTable ->update();
 		header('Location: index.php');
 		exit;
 
@@ -22,6 +19,7 @@ if($loader->Request->isPost()){
 		$errors = $StoreTable->getErrors();
 	}
 }	
+
 
 ?>
 
@@ -47,7 +45,7 @@ if($loader->Request->isPost()){
 				<input 
 					type="text" 
 					name="Store[name]" 
-					value="<?php echo !empty($formData['name'])? $formData['name'] : ''; ?>" 
+					value="<?php echo !empty($formData['name'])? $formData['name'] : $StoreRow->getName(); ?>" 
 					class="form-control" 
 					id="InputName" 
 					placeholder="支店名"
@@ -66,7 +64,7 @@ if($loader->Request->isPost()){
 				<input
 					type="text" 
 					name="Store[address]" 
-					value="<?php echo !empty($formData['address'])? $formData['address'] : ''; ?>"
+					value="<?php echo !empty($formData['address'])? $formData['address'] : $StoreRow->getAddress(); ?>"
 					class="form-control" 
 					id="InputAddress" 
 					placeholder="住所"
@@ -85,7 +83,7 @@ if($loader->Request->isPost()){
 				<input
 				 	type="text" 
 				 	name="Store[telephone]" 
-				 	value="<?php echo !empty($formData['telephone'])? $formData['telephone'] : ''; ?>"
+				 	value="<?php echo !empty($formData['telephone'])? $formData['telephone'] : $StoreRow->getTelephone(); ?>"
 				 	class="form-control" 
 				 	id="InputTelephone" 
 				 	placeholder="電話番号">
@@ -96,13 +94,15 @@ if($loader->Request->isPost()){
 				<?php endif; ?>
 			</div>
 		</div>
-
+		<input type="hidden" name="Store[id]" value="<?php echo $loader->View->h($StoreRow->getId()); ?>" />
 
 		<div class="form-group text-center">
-				<a href="<?php echo $loader->View->getRootUrl(); ?>" class="btn btn-default">キャンセル</a>
-				<button type="submit" class="btn btn-primary">登録</button>
-			
+
+			<a href="<?php echo $loader->View->getRootUrl(); ?>" class="btn btn-default">一覧に戻る</a>
+
+			<button type="submit" class="btn btn-success">更新</button>			
 		</div>
+
 	</form>
 
 
