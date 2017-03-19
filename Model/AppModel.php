@@ -1,5 +1,6 @@
 <?php 
 require_once($_SERVER['DOCUMENT_ROOT'] .'/Model/Row/Store.php');
+require_once($_SERVER['DOCUMENT_ROOT'] .'/Model/Row/Book.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . "/Config/database.php");
 
 class AppModel{
@@ -26,10 +27,12 @@ class AppModel{
 	}
 
 	public function set($params)
-	{
-		$params = $params[$this->row];
+	{	
+		$params = !empty($params[$this->row])? $params[$this->row] : $params;
 		$this->_params = $params;
-		$this->__Validation->set($params);
+		if(!empty($this->__Validation)){
+			$this->__Validation->set($params);
+		}
 	}
 
 	public function fetch($sql,$params = array())
@@ -53,6 +56,24 @@ class AppModel{
 
 		return true;
 	}
+
+	public function beginTransaction()
+	{
+		return $this->__Db->beginTransaction();
+	}
+
+
+	public function commit()
+	{
+		$this->__Db->commit();
+	}
+
+	
+	public function rollBack()
+	{
+		$this->__Db->rollBack();
+	}
+
 
 	protected function setCurrentDate()
 	{

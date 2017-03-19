@@ -98,7 +98,7 @@ if($loader->Request->isPost()){
 
 		<div class="form-group text-center">
 
-			<a href="<?php echo $loader->View->getRootUrl(); ?>" class="btn btn-default">一覧に戻る</a>
+			<a href="<?php echo $loader->View->getRootUrl(); ?>" class="btn btn-default">キャンセル</a>
 
 			<button type="submit" class="btn btn-success">更新</button>			
 		</div>

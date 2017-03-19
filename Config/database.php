@@ -28,6 +28,12 @@ class Database
 		$this->setEnvironment()->setConnection();
 	}
 
+	//トランザクション処理開始
+	public function beginTransaction()
+	{
+		return $this->pdo->beginTransaction();
+	}
+
 	//sqlを実行する関数
 	public function execute($sql,$params){
 		try{
@@ -41,6 +47,18 @@ class Database
 			echo $e->getMessage();
 			exit;
 		}
+	}
+
+	//DB処理全てが成功したらOK
+	public function commit()
+	{
+		$this->pdo->commit();
+	}
+
+	//DB処理が1つでもミスったら今までのDB処理を全部元に戻す
+	public function rollBack()
+	{
+		$this->pdo->rollBack();
 	}
 
 	//データベースの接続をする関数

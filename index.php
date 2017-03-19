@@ -48,7 +48,9 @@ $StoreRowset = $Store->getRowset();
 					class="js-store-id-space" 
 					data-store-id="<?php echo $loader->View->h($StoreRow->getId()); ?>"
 				>
-					<?php echo $loader->View->h($StoreRow->getId()); ?>
+					<a href="<?php echo $loader->View->getRootUrl(); ?>/store_detail.php?id=<?php echo $loader->View->h($StoreRow->getId());?>">
+						<?php echo $loader->View->h($StoreRow->getId()); ?>
+					</a>
 					
 				</th>
 				<td><?php echo $loader->View->h($StoreRow->getName()); ?></td>
